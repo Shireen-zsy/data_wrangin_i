@@ -141,4 +141,42 @@ arrange(litters_df, pups_born_alive, gd0_weight)
 ## PIPING!!!!!!!!!!!
 
 
+Don't do this!!!!
+```{r}
+# litters_df = read_csv("data/FAS_litters.csv", na = c("NA", "", ""))
+
+# litters_df = janitor::clean_names(litters_df)
+
+litters_df_var = select(litters_df, -pups_born_alive)
+
+litters_with_filter = filter(litters_df, group == "Con7")
+
+litters_wt_gain = mutate(litters_df, wt_gain = gd18_weight - gd0_weight)
+
+```
+
+definitely don't do this
+```{r}
+janitor::clean_names(read_csv("data/FAS_litters.csv", na = c("NA", "", ".")))
+
+```
+
+Do this!!!
+```{r}
+litters_df = 
+  read_csv("data/FAS_litters.csv", na = c("NA", "", ".")) |> 
+  janitor::clean_names() |> 
+  select(-pups_born_alive) |> 
+  filter(group == "Con7") |> 
+  mutate(
+    wt_gain = gd18_weight - gd0_weight,
+    group = str_to_lower(group)
+  ) 
+```
+
+
+
+
+
+
 
